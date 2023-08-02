@@ -72,7 +72,7 @@ function showEditForm(note, formContainer) {
             ${getSelect(note.category)}
         </select>
         <div class="form-note__title">Content:</div>
-        <textarea class="form-note__content" cols="35" rows="10">${note.content}</textarea>
+        <textarea class="form-note__content">${note.content}</textarea>
         <div class="form-note__checkboxdiv">
             <input class="form-note__checkbox" type="checkbox" ${note.active ? 'checked' : ''}>
             <span class="form-note__label4">Active</span>
@@ -147,12 +147,11 @@ function showForm(formContainer) {
             name: name,
             created: new Date().toLocaleDateString(), 
             content: content,
-            category: category, 
+            category: parseInt(category), 
             active: active,
         };
         notes.push(newNote);
         formContainer.innerHTML = '';
-
         updateUI();
 });
 
@@ -168,7 +167,7 @@ function showForm(formContainer) {
         return {
         category: category.name,
         count: notes.filter(note => note.category === category.id && note.active).length,
-        icon: category.icon, // Add the icon property to the category object
+        icon: category.icon, 
         };
     });
 
