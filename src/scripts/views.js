@@ -78,14 +78,14 @@ function showEditForm(note, formContainer) {
             <span class="form-note__label4">Active</span>
         </div>
         <div>
-            <input class="form-note__btn" type="submit" value="Update">
-            <input class="form-note__btn" type="button" value="Cancel">
+            <input class="form-note__btn update-btn" type="submit" value="Update">
+            <input class="form-note__btn cancel-btn" type="button" value="Cancel">
         </div>
         </form>
     `;
 
-    const updateButton = formContainer.querySelector('.form-note__button1');
-    const cancelButton = formContainer.querySelector('.form-note__button2');
+    const updateButton = formContainer.querySelector('.update-btn');
+    const cancelButton = formContainer.querySelector('.cancel-btn');
 
     updateButton.addEventListener('click', (event) => {
         event.preventDefault();
@@ -122,17 +122,17 @@ function showForm(formContainer) {
         <textarea class="form-note__content" cols="35" rows="10"></textarea>
         <div class="form-note__checkboxdiv">
             <input class="form-note__checkbox" type="checkbox" checked>
-            <span class="fform-note__title">Active</span>
+            <span class="form-note__title">Active</span>
         </div>
         <div>
-            <input class="form-note__btn" type="submit" value="Create">
-            <input class="form-note__btn" type="reset" value="Cancel">
+            <input class="form-note__btn btn-save" type="submit" value="Create">
+            <input class="form-note__btn btn-cancel" type="reset" value="Cancel">
         </div>
         </form>
     `;
 
-    const createButton = formContainer.querySelector('.form-note__button1');
-    const cancelButton = formContainer.querySelector('.form-note__button2');
+    const createButton = formContainer.querySelector('.btn-save');
+    const cancelButton = formContainer.querySelector('.btn-cancel');
 
     createButton.addEventListener('click', (event) => {
         event.preventDefault();
