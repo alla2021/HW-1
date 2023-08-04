@@ -1,18 +1,32 @@
 import { notes, categories } from './data.js';
-import { getArchivedNotesCount, getCategoryNameById, getDatesInNoteContent, getCategoryIcon, getSelect } from './services.js';
+import { getCategoryNameById, getDatesInNoteContent, getCategoryIcon, getSelect } from './services.js';
 
-const formContainer = document.querySelector('.form');
+function updateUI(formContainer) {
+    try {
+        const notesListContainer = document.querySelector('.notes-list');
+        notesListContainer.innerHTML = ''; 
+        notes.forEach(note => {
+            if (note.active) {
+                const noteElement = createNoteElement(note, formContainer); 
+                notesListContainer.appendChild(noteElement);
+            }
+        });
+        updateSummaryTable();
+    } catch (error) {
+        console.error('An error occurred while updating the UI:', error);
+    }
+}
 
 function createNoteElement(note) {
     const noteElement = document.createElement('div');
     noteElement.classList.add('note');
     noteElement.innerHTML = `
     <div class="note__icon"><i class="material-icons">${getCategoryIcon(note.category)}</i></div>
-    <div class="note-name">${note.name}</div>
-    <div class="note-created">${note.created}</div>
-    <div class="note-category">${getCategoryNameById(note.category)}</div>
-    <div class="note-content">${note.content}</div>
-    <div class="note-dates">${getDatesInNoteContent(note.content)}</div>
+    <div class="note__name">${note.name}</div>
+    <div class="note__created">${note.created}</div>
+    <div class="note__category">${getCategoryNameById(note.category)}</div>
+    <div class="note__content">${note.content}</div>
+    <div class="note__dates">${getDatesInNoteContent(note.content)}</div>
     <button class="btn-edit note-btn">
         <i class="material-icons">create</i>
     </button>
@@ -26,7 +40,7 @@ function createNoteElement(note) {
 
     const editButton = noteElement.querySelector('.btn-edit');
     editButton.addEventListener('click', () => {
-      showEditForm(note, formContainer);
+        showEditForm(note, formContainer);
     });
 
     const archiveButton = noteElement.querySelector('.btn-archive');
@@ -46,20 +60,57 @@ function createNoteElement(note) {
     return noteElement;
 }
 
-function updateUI(formContainer) {
-    try {
-        const notesListContainer = document.querySelector('.notes-list');
-        notesListContainer.innerHTML = ''; 
-        notes.forEach(note => {
-            if (note.active) {
-                const noteElement = createNoteElement(note, formContainer); 
-                notesListContainer.appendChild(noteElement);
-            }
-        });
-        updateSummaryTable();
-    } catch (error) {
-        console.error('An error occurred while updating the UI:', error);
-    }
+function showForm(formContainer) {
+    formContainer.innerHTML = `
+        <form class="form-note">
+        <div class="form-note__title">Name:</div>
+        <input class="form-note__name">
+        <div class="form-note__title">Category:</div>
+        <select class="form-note__select">
+            ${getSelect()}
+        </select>
+        <div class="form-note__title">Content:</div>
+        <textarea class="form-note__content"></textarea>
+        <div class="">
+            <input class="form-note__checkbox" type="checkbox" checked>
+            <span class="form-note__title">Active</span>
+        </div>
+        <div>
+            <input class="form-note__btn btn-save" type="submit" value="Create">
+            <input class="form-note__btn btn-cancel" type="reset" value="Cancel">
+        </div>
+        </form>
+    `;
+
+    const createButton = formContainer.querySelector('.btn-save');
+    const cancelButton = formContainer.querySelector('.btn-cancel');
+
+    createButton.addEventListener('click', (event) => {
+        event.preventDefault();
+
+        const name = formContainer.querySelector('.form-note__name').value;
+        const category = formContainer.querySelector('.form-note__select').value;
+        const content = formContainer.querySelector('.form-note__content').value;
+        const active = formContainer.querySelector('.form-note__checkbox').checked;
+
+        const newNote = {
+            id: notes.length + 1, 
+            name: name,
+            created: new Date().toLocaleDateString(), 
+            content: content,
+            category: parseInt(category), 
+            active: active,
+        };
+        notes.push(newNote);
+        formContainer.innerHTML = '';
+        updateUI();
+    });
+
+    cancelButton.addEventListener('click', () => {
+        formContainer.innerHTML = '';
+    });
+
+    
 }
 
 function showEditForm(note, formContainer) {
@@ -75,7 +126,7 @@ function showEditForm(note, formContainer) {
         <textarea class="form-note__content">${note.content}</textarea>
         <div class="form-note__checkboxdiv">
             <input class="form-note__checkbox" type="checkbox" ${note.active ? 'checked' : ''}>
-            <span class="form-note__label4">Active</span>
+            <span class="form-note__title">Active</span>
         </div>
         <div>
             <input class="form-note__btn update-btn" type="submit" value="Update">
@@ -109,98 +160,79 @@ function showEditForm(note, formContainer) {
     });
 }
 
-function showForm(formContainer) {
-    formContainer.innerHTML = `
-        <form class="form-note">
-        <div class="form-note__title">Name:</div>
-        <input class="form-note__name">
-        <div class="form-note__title">Category:</div>
-        <select class="form-note__select">
-            ${getSelect()}
-        </select>
-        <div class="form-note__title">Content:</div>
-        <textarea class="form-note__content" cols="35" rows="10"></textarea>
-        <div class="form-note__checkboxdiv">
-            <input class="form-note__checkbox" type="checkbox" checked>
-            <span class="form-note__title">Active</span>
-        </div>
-        <div>
-            <input class="form-note__btn btn-save" type="submit" value="Create">
-            <input class="form-note__btn btn-cancel" type="reset" value="Cancel">
-        </div>
-        </form>
-    `;
-
-    const createButton = formContainer.querySelector('.btn-save');
-    const cancelButton = formContainer.querySelector('.btn-cancel');
-
-    createButton.addEventListener('click', (event) => {
-        event.preventDefault();
-
-        const name = formContainer.querySelector('.form-note__name').value;
-        const category = formContainer.querySelector('.form-note__select').value;
-        const content = formContainer.querySelector('.form-note__content').value;
-        const active = formContainer.querySelector('.form-note__checkbox').checked;
-
-        const newNote = {
-            id: notes.length + 1, 
-            name: name,
-            created: new Date().toLocaleDateString(), 
-            content: content,
-            category: parseInt(category), 
-            active: active,
-        };
-        notes.push(newNote);
-        formContainer.innerHTML = '';
-        updateUI();
-});
-
-    cancelButton.addEventListener('click', () => {
-        formContainer.innerHTML = '';
-    });
-}
-
-
-
-    function updateSummaryTable() {
+function updateSummaryTable() {
     const activeNotesByCategory = categories.map(category => {
         return {
-        category: category.name,
-        count: notes.filter(note => note.category === category.id && note.active).length,
-        icon: category.icon, 
+            category: category.name,
+            count: notes.filter(note => note.category === category.id && note.active).length,
+            archivedCount: notes.filter(note => note.category === category.id && !note.active).length,
+            icon: category.icon,
         };
     });
 
-    const summaryTable = document.querySelector('.header-result-table');
-    summaryTable.innerHTML = '';
-
-    // Add table headers
-    const headerRow = document.createElement('div');
-    headerRow.classList.add('table-header');
-    headerRow.innerHTML = `
-        <div>Note Category</div>
-        <div class="active-list">Active</div>
-        <div class="archived-list">Archived</div>
-    `;
-    summaryTable.appendChild(headerRow);
-
-    // Add table rows
+    const summaryTable = document.querySelector('.categories-list');
+    summaryTable.innerHTML = ''
     activeNotesByCategory.forEach(item => {
         const row = document.createElement('div');
         row.classList.add('summary-row');
         row.innerHTML = `
-        <div><i class="${getCategoryIcon(item.icon)}"></i> ${item.category}</div>
-        <div>${item.count}</div>
-        <div>${getArchivedNotesCount(item.category)}</div>
+            <div class="note__icon">
+                <i class="material-icons">${item.icon}</i>  
+            </div>
+            <div>${item.category}</div>
+            <div>${item.count}</div>
+            <div>${item.archivedCount}</div>
         `;
         summaryTable.appendChild(row);
     });
 }
 
-    export {
+function showArchivedNotes(archivedNotesContainer) {
+    archivedNotesContainer.innerHTML = '';
+
+    notes.forEach(note => {
+        if (!note.active) {
+            const noteElement = createArchivedNoteElement(note);
+            archivedNotesContainer.appendChild(noteElement);
+        }
+    });
+}
+
+function createArchivedNoteElement(note) {
+    const noteElement = document.createElement('div');
+    noteElement.classList.add('archived-note');
+    noteElement.innerHTML = `
+        <div class="note__icon"><i class="material-icons">${getCategoryIcon(note.category)}</i></div>
+        <div class="note__category">${getCategoryNameById(note.category)}</div>
+        <div class="note__content">${note.content}</div>
+        <button class="btn-unarchive note-btn">
+            <i class="material-icons">unarchive</i>
+        </button>
+    `;
+
+    const unarchiveButton = noteElement.querySelector('.btn-unarchive');
+    unarchiveButton.addEventListener('click', () => {
+        unarchiveNote(note.id);
+        noteElement.innerHTML = '';
+        updateUI();
+    });
+
+    return noteElement;
+}
+
+function unarchiveNote(noteId) {
+    const note = notes.find(note => note.id === noteId);
+    if (note) {
+        note.active = true;
+    }
+}
+
+export {
     updateUI,
     createNoteElement,
     showEditForm,
     showForm,
     updateSummaryTable,
-    };
+    showArchivedNotes,
+    createArchivedNoteElement,
+};
