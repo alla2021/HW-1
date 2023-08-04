@@ -201,11 +201,13 @@ function showArchivedNotes(archivedNotesContainer) {
 function createArchivedNoteElement(note) {
     const noteElement = document.createElement('div');
     noteElement.classList.add('archived-note');
-    noteElement.innerHTML = `
-        <div class="note__icon"><i class="material-icons">${getCategoryIcon(note.category)}</i></div>
-        <div class="note__category">${getCategoryNameById(note.category)}</div>
-        <div class="note__content">${note.content}</div>
-        <button class="btn-unarchive note-btn">
+    noteElement.innerHTML = `<div class="note__icon"><i class="material-icons">${getCategoryIcon(note.category)}</i></div>
+    <div class="note__name">${note.name}</div>
+    <div class="note__created">${note.created}</div>
+    <div class="note__category">${getCategoryNameById(note.category)}</div>
+    <div class="note__content">${note.content}</div>
+    <div class="note__dates">${getDatesInNoteContent(note.content)}</div>
+    <button class="btn-unarchive note-btn">
             <i class="material-icons">unarchive</i>
         </button>
     `;
@@ -213,7 +215,7 @@ function createArchivedNoteElement(note) {
     const unarchiveButton = noteElement.querySelector('.btn-unarchive');
     unarchiveButton.addEventListener('click', () => {
         unarchiveNote(note.id);
-        noteElement.innerHTML = '';
+        noteElement.remove();
         updateUI();
     });
 
