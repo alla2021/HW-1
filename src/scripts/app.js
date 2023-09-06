@@ -25,6 +25,8 @@ deleteAllButton.addEventListener('click', () => {
 
 buttonCreate.addEventListener('click', () => {
   showForm(formContainer); 
+  const createNoteBtn = document.querySelector('.button-create');
+  createNoteBtn.style.display = 'none';
 });
 
 //summary table

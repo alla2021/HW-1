@@ -83,6 +83,8 @@ function showForm(formContainer) {
         </div>
         </form>
     `;
+    const createNoteBtn = document.querySelector('.button-create');
+
 
     const createButton = formContainer.querySelector('.btn-save');
     const cancelButton = formContainer.querySelector('.btn-cancel');
@@ -106,10 +108,12 @@ function showForm(formContainer) {
         notes.push(newNote);
         formContainer.innerHTML = '';
         updateUI();
+        createNoteBtn.style.display = 'block'; 
     });
 
     cancelButton.addEventListener('click', () => {
         formContainer.innerHTML = '';
+        createNoteBtn.style.display = 'block'; 
     });
 
     

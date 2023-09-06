@@ -4,6 +4,7 @@ Live Demo: [Notes App](https://alla2021.github.io/notes-app/)
 
 #Introduction
 This is a description of a notes application developed using JavaScript. The application is a web-based system that empowers users to manage their notes efficiently. It provides the following key features:
+![Screenshot 2023-09-06 190956](https://github.com/alla2021/notes-app/assets/75502074/8675f245-a56f-4b48-bf78-7f096d9590e2)
 
 # Features
 Create, Edit, and Delete Notes: Users can create, edit, and delete notes with ease.
@@ -19,5 +20,4 @@ Summary Table: A summary table keeps track of note counts by category, separatel
 - HTML/CSS
 
 # Screenshots
-![Screenshot 2023-09-06 190956](https://github.com/alla2021/notes-app/assets/75502074/8675f245-a56f-4b48-bf78-7f096d9590e2)
 ![Screenshot 2023-09-06 191014](https://github.com/alla2021/notes-app/assets/75502074/03281636-a8d7-408d-a6c9-f6bf49ec153a)
