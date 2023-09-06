@@ -40,8 +40,10 @@ function createNoteElement(note) {
 
     const editButton = noteElement.querySelector('.btn-edit');
     editButton.addEventListener('click', () => {
+        const formContainer = document.querySelector('.form');
         showEditForm(note, formContainer);
     });
+
 
     const archiveButton = noteElement.querySelector('.btn-archive');
     archiveButton.addEventListener('click', () => {
