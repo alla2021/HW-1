@@ -90,7 +90,6 @@ body {
 	margin: 20px 0 0px;
 }
 
-
 .form-note {
 	display: grid;
 	margin: 0 auto;
@@ -136,4 +135,46 @@ body {
 
 .archived-note{
 	border: 2px solid rgb(69, 63, 63);
+}
+
+@media (max-width: 600px) {
+	.container {
+		width: 95%;
+	}
+
+	.table-header, .archived-header {
+		margin: 3px 0 0;
+	}
+	
+	.note, .archived-note {
+		margin: 0 auto 3px auto;
+		padding: 3px 0;
+		font-size: 10px;
+	}
+
+	.note__icon {
+		width: 16px;
+		height: 16px;
+	}
+	
+	.note__icon i, .material-icons{
+		font-size: 14px;
+	}
+
+	.button-create {
+		padding: 5px 15px;
+		font-size: 15px;
+		margin: 10px 0 0px;
+	}
+	
+
+	.summary-row{
+		margin: 0 auto 3px auto;
+		padding: 5px 0;
+		font-size: 10px;
+	}
+
+	.table-header div, .header-result-table div{
+		font-size: 10px;
+	}
 }
